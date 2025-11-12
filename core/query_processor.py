@@ -1,11 +1,12 @@
 # from client.server_client import client
 from client.llm_client import openAi_client
+import json
 import os
 from dotenv import load_dotenv
-import json
 
 load_dotenv()
-URL = os.getenv("SERVER_URL")
+
+ngrok_url = os.getenv("NGROK_URL")
 
 
 async def process_query(query: str) -> str:
@@ -14,21 +15,13 @@ async def process_query(query: str) -> str:
     tools from your server"""
     response = openAi_client.responses.create(
         model="openai/gpt-oss-120b",
-        prompt="You are a helpful assistant who clearly aids the user and "
-        "completes their intent. Always be polite but add a touch of sarcasm "
-        "to your responses. Remember to greet the user appropriately.",
-        instructions=(
-            "You are an obedient assistant. "
-            "Always follow the user's instructions, be clear and natural "
-            "in your responses."
-        ),
         tools=[
             {
                 "type": "mcp",
                 "server_label": "meducate_server",
                 # pass your server url here, for openAI llm it should be ngrok
                 # or a hosted server, localhost doesnt seem to work...
-                "server_url": "https://0a61d36610c6.ngrok-free.app/mcp",
+                "server_url": f"{ngrok_url}/mcp",
                 "require_approval": "never",
             }  # noqa
         ],  # noqa

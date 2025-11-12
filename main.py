@@ -1,23 +1,28 @@
 from client.server_client import client
 import asyncio
-from core.query_processor import process_query
-import json
+from fastapi import FastAPI
+import uvicorn
+from route import router as api_router
+
+app = FastAPI(
+    title="Meducate _Client/Backend",
+    description="This is the backend that handles the requests and logic for"
+    "meducate backend",
+)
+
+app.include_router(api_router)
+
+
+@app.get("/")
+def root():
+    return {"message": "Meducate it"}
 
 
 async def main():
     print("Hello from meducate_client!")
     async with client:
         await client.ping()
-        # tools = await client.list_tools()
-        # print(tools)
-        result = await process_query(
-            "send an email to obliepius14@gmail.com and tell him to buy water on his way home"  # noqa
-        )
-        print("-" * 60)
-        print("📥 RESPONSE")
-        print("-" * 60)
-        print(f"\n{json.dumps(result, indent=2)}\n")
-        print("=" * 60 + "\n")
+    uvicorn.run("main:app", host="0.0.0.0", port=8080, reload=True)
 
 
 if __name__ == "__main__":

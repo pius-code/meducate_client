@@ -1,3 +1,9 @@
 from fastmcp import Client
+import os
+from dotenv import load_dotenv
 
-client = Client("https://0a61d36610c6.ngrok-free.app/mcp")
+load_dotenv()
+
+ngrok_url = os.getenv("NGROK_URL")
+
+client = Client(f"{ngrok_url}/mcp")
