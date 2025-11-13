@@ -1,5 +1,5 @@
 # from client.server_client import client
-from client.llm_client import openAi_client
+from client.llm_client import openAi_client, openAi_client2, openAi_client3  # noqa
 import json
 import os
 from dotenv import load_dotenv
@@ -14,7 +14,7 @@ async def process_query(query: str) -> str:
     and available
     tools from your server"""
     response = openAi_client.responses.create(
-        model="openai/gpt-oss-120b",
+        model="openai/gpt-4o",
         tools=[
             {
                 "type": "mcp",
